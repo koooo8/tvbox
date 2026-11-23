@@ -2529,20 +2529,6 @@ class YtAggSpider(_BaseSpider):
     def _auto_update(self):
         # 合并版统一由 Kishuto 门面负责自更新，子源不再各自拉清单
         return
-        self._updating = True
-
-        def run():
-            try:
-                got = check_update(self._update_url)
-                self._update = got
-                globals()['_UPDATE_LAST'] = got
-            except Exception:
-                pass
-
-        try:
-            threading.Thread(target=run, daemon=True).start()
-        except Exception:
-            pass
 
     def _prewarm(self):
         """首页阶段偷偷把咕噜/橘汁的握手+boot 做完（各约 0.9s），
