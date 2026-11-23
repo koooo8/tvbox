@@ -7,7 +7,7 @@
 """
 
 # ==================== 版本（必须放在最前：被聚合代码在模块级引用） ====
-CODE_VERSION = '20261124.1830'
+CODE_VERSION = '20261124.1900'
 # ============================================================
 # 自建更新源：把 USER / REPO 换成你自己的 GitHub 用户名和仓库名
 # 按顺序尝试，第一个能拿到清单的就用；最后一条是手机本地兜底
@@ -8326,12 +8326,14 @@ def _kish_check(url=None):
         out['msg'] = 'no url'
         return out
     try:
-        man, url = {}, ''
+        man, url, _best = {}, '', None
         for _u in urls:
             _m = _read_manifest(_u)
-            if _m.get('version'):
-                man, url = _m, _u
-                break
+            if not _m.get('version'):
+                continue
+            _v = tuple(int(x) for x in re.findall(r"\d+", str(_m.get('version'))))
+            if _best is None or _v > _best:      # 多源取最高版本，避免被某个 CDN 的旧缓存卡住
+                man, url, _best = _m, _u, _v
         if not url:
             out['msg'] = 'all update sources failed'
             return out
