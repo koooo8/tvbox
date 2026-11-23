@@ -8313,6 +8313,8 @@ def _read_bytes(u, timeout=8):
     if u.startswith("file://"):
         with open(u[7:], "rb") as f:
             return f.read()
+    sep = "&" if "?" in u else "?"
+    u = "%s%st=%d" % (u, sep, int(time.time() * 1000))   # 破 CDN 缓存
     req = urllib.request.Request(
         u, headers={"User-Agent": "kishuto/1.0", "Cache-Control": "no-cache"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
