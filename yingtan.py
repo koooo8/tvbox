@@ -7,7 +7,7 @@
 """
 
 # ==================== 版本（必须放在最前：被聚合代码在模块级引用） ====
-CODE_VERSION = '20261108.194545'
+CODE_VERSION = '20261124.1830'
 # ============================================================
 # 自建更新源：把 USER / REPO 换成你自己的 GitHub 用户名和仓库名
 # 按顺序尝试，第一个能拿到清单的就用；最后一条是手机本地兜底
@@ -16,7 +16,6 @@ UPDATE_URLS = [
     'https://raw.githubusercontent.com/koooo8/tvbox/main/update.json',
     'https://cdn.jsdelivr.net/gh/koooo8/tvbox@main/update.json',
     'https://ghfast.top/https://raw.githubusercontent.com/koooo8/tvbox/main/update.json',
-    'file:///sdcard/Download/DSH-Go/repo/update.json',
 ]
 UPDATE_URL = UPDATE_URLS[0]
 
