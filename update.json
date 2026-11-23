@@ -1,7 +1,7 @@
 {
-  "version": "20261124.1830",
+  "version": "20261124.1900",
   "url": "yingtan.py",
-  "sha256": "3545935d6d18085b7234e7d242fecbea8a865c3177e4f02af391e2bab5e4930f",
-  "size": 491580,
-  "note": "koooo8 自建源 · 去掉 file:// 兜底"
+  "sha256": "390b47b23ca9cb8453e4683778fe4e91eab83e3cf0fd5dc19590653da23be497",
+  "size": 491808,
+  "note": "多源取最高版本"
 }
