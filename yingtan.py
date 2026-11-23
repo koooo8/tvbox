@@ -8,7 +8,17 @@
 
 # ==================== 版本（必须放在最前：被聚合代码在模块级引用） ====
 CODE_VERSION = '20261108.194545'
-UPDATE_URL = 'file:///sdcard/Download/DSH-Go/repo/update.json'  # [自托管] 从手机本地清单取更新，内容完全由你掌控
+# ============================================================
+# 自建更新源：把 USER / REPO 换成你自己的 GitHub 用户名和仓库名
+# 按顺序尝试，第一个能拿到清单的就用；最后一条是手机本地兜底
+# ============================================================
+UPDATE_URLS = [
+    'https://raw.githubusercontent.com/koooo8/tvbox/main/update.json',
+    'https://cdn.jsdelivr.net/gh/koooo8/tvbox@main/update.json',
+    'https://ghfast.top/https://raw.githubusercontent.com/koooo8/tvbox/main/update.json',
+    'file:///sdcard/Download/DSH-Go/repo/update.json',
+]
+UPDATE_URL = UPDATE_URLS[0]
 
 # ======================================================================
 # 模块：yt
@@ -8323,13 +8333,21 @@ def _read_manifest(url):
 
 def _kish_check(url=None):
     """拉清单 → 比版本 → 整份覆盖自己。失败静默，绝不影响主流程。"""
-    url = (url or UPDATE_URL or '').strip()
+    urls = [str(url).strip()] if url else [u for u in UPDATE_URLS if u]
     out = {'ok': False, 'msg': ''}
-    if not url:
+    if not urls:
         out['msg'] = 'no url'
         return out
     try:
-        man = _read_manifest(url)
+        man, url = {}, ''
+        for _u in urls:
+            _m = _read_manifest(_u)
+            if _m.get('version'):
+                man, url = _m, _u
+                break
+        if not url:
+            out['msg'] = 'all update sources failed'
+            return out
         far = str(man.get('version') or '')
         if not far:
             out['msg'] = 'bad manifest'
